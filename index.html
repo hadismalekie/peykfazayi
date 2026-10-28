@@ -14,6 +14,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+
+<!-- Load PapaParse library to read Google Sheet CSV -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-GP9XETLK3F"></script>
 <script>
@@ -40,6 +44,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     --accent-purple:#b765b2;
     --accent-teal:#1ea689;
     --accent-pink:#e26d9c;
+    --accent-amber:#d97706;
     --star:#f4f1ff;
     --text-soft:#d9d4f0;
     --text-dim:#948fbf;
@@ -137,6 +142,136 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     color:var(--text-dim);
     text-align:center;
     margin-bottom:16px;
+  }
+
+  /* PRODUCT SEARCH & CATEGORY HUB STYLES */
+  .search-card{
+    background:rgba(255,255,255,0.035);
+    border:1px solid var(--ring);
+    border-radius:20px;
+    padding:20px;
+    margin-bottom:32px;
+    backdrop-filter:blur(10px);
+  }
+  .form-group{
+    margin-bottom:16px;
+  }
+  .form-group label{
+    display:block;
+    font-size:0.82rem;
+    color:var(--text-dim);
+    margin-bottom:6px;
+  }
+  .form-group input, .form-group select{
+    width:100%;
+    padding:12px 14px;
+    background:rgba(10,8,23,0.7);
+    border:1px solid var(--ring);
+    border-radius:12px;
+    color:var(--text-soft);
+    font-family:'Vazirmatn', sans-serif;
+    font-size:0.9rem;
+    outline:none;
+    transition:border-color 0.2s ease;
+  }
+  .form-group input:focus, .form-group select:focus{
+    border-color:var(--accent-teal);
+  }
+  .form-group select option{
+    background:#120e28;
+    color:var(--text-soft);
+  }
+  .search-row {
+    display: flex;
+    gap: 8px;
+  }
+  .search-btn {
+    background: var(--accent-teal);
+    color: #08241e;
+    border: none;
+    border-radius: 12px;
+    padding: 0 18px;
+    font-family: 'Vazirmatn', sans-serif;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+  }
+  .search-btn:hover { opacity: 0.9; }
+
+  .or-divider{
+    text-align:center;
+    font-size:0.78rem;
+    color:var(--text-dim);
+    margin:16px 0;
+    border-top: 1px dashed var(--ring);
+    padding-top: 12px;
+  }
+
+  .result-card{
+    display:none;
+    margin-top:16px;
+    padding:16px;
+    background:rgba(30,166,137,0.08);
+    border:1px solid rgba(30,166,137,0.4);
+    border-radius:14px;
+  }
+  .no-result{
+    font-size:0.85rem;
+    line-height:1.8;
+    color:var(--accent-pink);
+    text-align:center;
+    padding:12px;
+    background:rgba(226,109,156,0.08);
+    border:1px dashed rgba(226,109,156,0.4);
+    border-radius:12px;
+    margin-top:10px;
+    display: none;
+  }
+  .result-shop{
+    display:inline-block;
+    font-size:0.75rem;
+    color:var(--accent-teal);
+    background:rgba(30,166,137,0.15);
+    padding:3px 8px;
+    border-radius:6px;
+    margin-bottom:8px;
+  }
+  .result-title{
+    font-size:1rem;
+    font-weight:700;
+    color:var(--star);
+    margin-bottom:12px;
+  }
+  .btn-group{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+  }
+  .btn-link{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    padding:10px 14px;
+    border-radius:10px;
+    font-size:0.86rem;
+    font-weight:600;
+    text-decoration:none;
+    transition:transform 0.2s ease, opacity 0.2s ease;
+  }
+  .btn-link:hover{transform:translateY(-1px); opacity:0.95;}
+  .btn-main{background:var(--accent-purple); color:#fff;}
+  .btn-phone{background:var(--accent-amber); color:#fff;}
+  .btn-web{background:var(--accent-teal); color:#08241e;}
+  .sms-details{
+    background:rgba(10,8,23,0.5);
+    border:1px dashed var(--ring);
+    border-radius:10px;
+    padding:10px;
+    margin-top:10px;
+    font-size:0.82rem;
+    line-height:1.7;
+    color:var(--text-soft);
   }
 
   .shops{
@@ -327,131 +462,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     padding:8px 18px;
   }
   .assistant-cta svg{width:15px; height:15px;}
-
-  /* ===== جستجوی محصول ===== */
-  [hidden]{display:none !important;}
-  .sr-only{
-    position:absolute; width:1px; height:1px; overflow:hidden;
-    clip:rect(0,0,0,0); white-space:nowrap;
-  }
-  .search-controls{
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-    margin-bottom:14px;
-  }
-  .search-input, .cat-select{
-    width:100%;
-    font-family:inherit;
-    font-size:0.95rem;
-    color:var(--star);
-    background-color:rgba(255,255,255,0.05);
-    border:1px solid var(--ring);
-    border-radius:14px;
-    padding:13px 16px;
-    transition:border-color 0.25s ease, background-color 0.25s ease;
-  }
-  .search-input::placeholder{color:var(--text-dim);}
-  .search-input:focus-visible, .cat-select:focus-visible{
-    outline:2px solid var(--accent-teal);
-    outline-offset:2px;
-  }
-  .cat-select{
-    appearance:none;
-    -webkit-appearance:none;
-    cursor:pointer;
-    padding-left:40px;
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23948fbf' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-    background-repeat:no-repeat;
-    background-position:left 14px center;
-    background-size:18px;
-  }
-  .cat-select option{background:#1a1230; color:var(--star);}
-
-  .result-count{
-    min-height:1.3em;
-    margin:0 0 12px;
-    font-size:0.78rem;
-    color:var(--text-dim);
-    text-align:center;
-  }
-  .results{display:flex; flex-direction:column; gap:12px;}
-  .product{
-    background:rgba(255,255,255,0.035);
-    border:1px solid var(--ring);
-    border-radius:16px;
-    padding:16px 18px;
-  }
-  .product-name{
-    margin:0 0 6px;
-    font-size:1rem;
-    font-weight:600;
-    line-height:1.8;
-    color:var(--star);
-  }
-  .product-meta{
-    display:flex;
-    flex-wrap:wrap;
-    align-items:center;
-    gap:8px;
-    margin-bottom:12px;
-    font-size:0.78rem;
-    color:var(--text-dim);
-  }
-  .chip{
-    color:var(--accent-teal);
-    background:rgba(30,166,137,0.12);
-    border-radius:999px;
-    padding:2px 10px;
-  }
-  .actions{display:flex; flex-wrap:wrap; gap:8px;}
-  .btn{
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    font-family:inherit;
-    font-size:0.84rem;
-    font-weight:500;
-    text-decoration:none;
-    color:var(--text-soft);
-    background:rgba(255,255,255,0.04);
-    border:1px solid var(--ring);
-    border-radius:999px;
-    padding:8px 14px;
-    cursor:pointer;
-    transition:border-color 0.25s ease, background-color 0.25s ease, transform 0.2s ease;
-  }
-  .btn:hover, .btn:focus-visible{
-    border-color:rgba(183,101,178,0.6);
-    background:rgba(183,101,178,0.1);
-    transform:translateY(-1px);
-  }
-  .btn:focus-visible{outline:2px solid var(--accent-teal); outline-offset:3px;}
-  .btn.btn-main{
-    color:#08241e;
-    font-weight:700;
-    background:var(--accent-teal);
-    border-color:transparent;
-  }
-  .btn.btn-main:hover, .btn.btn-main:focus-visible{background:#25bd9d; border-color:transparent;}
-  .sms-line{
-    margin:10px 0 0;
-    font-size:0.78rem;
-    line-height:1.9;
-    color:var(--text-dim);
-  }
-  .ltr{direction:ltr; unicode-bidi:isolate; color:var(--text-soft);}
-  .empty{
-    margin:0;
-    padding:18px 14px;
-    text-align:center;
-    font-size:0.88rem;
-    line-height:1.9;
-    color:var(--text-dim);
-    border:1px dashed var(--ring);
-    border-radius:16px;
-  }
-  .more-btn{display:flex; margin:16px auto 0;}
 </style>
 </head>
 <body>
@@ -485,19 +495,52 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <h1>پیک فضایی</h1>
     <p class="tagline">یک سفینه که هر بار کنار سیاره‌ی تازه‌ای پارک می‌کند و یک چیز جدید نشانمان می‌دهد.</p>
   </section>
-  <section class="product-search" id="product-search" aria-labelledby="ps-title">
-    <p class="section-label" id="ps-title">محصولی که دیدی را اینجا پیدا کن:</p>
-    <div class="search-controls">
-      <label class="sr-only" for="ps-q">جستجوی اسم محصول</label>
-      <input class="search-input" id="ps-q" type="search" placeholder="اسم محصول را بنویس…" autocomplete="off" enterkeyhint="search">
-      <label class="sr-only" for="ps-cat">دسته‌بندی</label>
-      <select class="cat-select" id="ps-cat">
-        <option value="">همه دسته‌ها</option>
-      </select>
+
+  <!-- DUAL OPTION SEARCH & CATEGORY HUB SECTION -->
+  <section>
+    <p class="section-label">🔍 جستجو یا انتخاب دسته‌بندی محصول</p>
+    <div class="search-card">
+      
+      <!-- METHOD 1: Search Box with Button + Result Dropdown -->
+      <div class="form-group">
+        <label for="searchInput">جستجو با کلمه کلیدی:</label>
+        <div class="search-row">
+          <input type="text" id="searchInput" placeholder="نام محصول را بنویسید...">
+          <button class="search-btn" onclick="executeSearch()">جستجو</button>
+        </div>
+      </div>
+
+      <!-- Result Dropdown (Populated after clicking search) -->
+      <div class="form-group" id="searchResultGroup" style="display:none;">
+        <label for="searchResultSelect">نتایج جستجو:</label>
+        <select id="searchResultSelect" onchange="onSearchResultSelect()">
+          <option value="">یک مورد را انتخاب کنید...</option>
+        </select>
+      </div>
+
+      <!-- No Result Message -->
+      <div id="noResultMsg" class="no-result">محصولی با این اسم پیدا نشد. اسم دیگری را امتحان کن یا به لیست فروشگاه‌ها پایین‌تر سر بزن.</div>
+
+      <div class="or-divider">یا انتخاب بر اساس دسته‌بندی</div>
+
+      <!-- METHOD 2: Category Dropdown -> Product Dropdown -->
+      <div class="form-group">
+        <label for="categorySelect">۱. انتخاب دسته‌بندی:</label>
+        <select id="categorySelect" onchange="onCategoryChange()">
+          <option value="">ابتدا یک دسته‌بندی انتخاب کنید...</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="categoryProductSelect">۲. انتخاب محصول:</label>
+        <select id="categoryProductSelect" disabled onchange="onCategoryProductSelect()">
+          <option value="">ابتدا دسته‌بندی را انتخاب کنید...</option>
+        </select>
+      </div>
+
+      <!-- FINAL INFO DISPLAY CARD -->
+      <div id="resultCard" class="result-card"></div>
     </div>
-    <p class="result-count" id="ps-count" role="status" aria-live="polite"></p>
-    <div class="results" id="ps-results"></div>
-    <button type="button" class="btn more-btn" id="ps-more" hidden>نمایش بیشتر</button>
   </section>
 
 <p class="section-label">
@@ -634,10 +677,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <p class="section-label">نماد اعتماد الکترونیکی</p>
     <a class="trust-seal" referrerpolicy='origin' target='_blank' href='https://trustseal.enamad.ir/?id=8334214&Code=by2bAsfQkMndrR6oDMb0EElSHnefjJOU'><img referrerpolicy='origin' src='https://trustseal.enamad.ir/logo.aspx?id=8334214&Code=by2bAsfQkMndrR6oDMb0EElSHnefjJOU' alt='' style='cursor:pointer' code='by2bAsfQkMndrR6oDMb0EElSHnefjJOU'></a>
   </div>
- 
-
-	
-	
   </footer>
 </main>
 
@@ -672,274 +711,186 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   });
 </script>
 
+<!-- PRODUCT SEARCH ENGINE SCRIPT -->
 <script>
-(function(){
-  "use strict";
-  /* ---------- ابزارها: خواندن CSV و نرمال‌سازی متن فارسی ---------- */
+  // لینک جدید گوگل شیت شما (Peyk-ProductBank)
+  const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT5K_P0123456789.../pub?output=csv'; // (لطفاً لینک pub?output=csv شیت جدیدتان را اینجا قرار دهید)
+  let allProducts = [];
 
-  // تبدیل ارقام فارسی/عربی به انگلیسی
-  function toEnDigits(s){
-    return String(s == null ? '' : s)
-      .replace(/[\u06F0-\u06F9]/g, function(d){ return String.fromCharCode(d.charCodeAt(0) - 0x06F0 + 48); })
-      .replace(/[\u0660-\u0669]/g, function(d){ return String.fromCharCode(d.charCodeAt(0) - 0x0660 + 48); });
-  }
+  window.addEventListener('DOMContentLoaded', () => {
+    // از آنجا که لینک شیت جدید شما با فرمت قبلی فرق دارد، لینک مستقیم شیت جدیدتان را اینجا می‌گذاریم:
+    const realCsvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQghEBhJPSo7HHEi1-APlxDJ6lA8pTX_x62J55ZFIsEZa-ijru_YTh61_xA5HYSo6U9WoSDA6Koaqsp/pub?gid=0&single=true&output=csv';
 
-  // یکسان‌سازی «ی» و «ک» عربی/فارسی، حذف اعراب و نیم‌فاصله، حروف کوچک
-  function norm(s){
-    return toEnDigits(s)
-      .replace(/[\u064A\u0649]/g, '\u06CC')
-      .replace(/\u0643/g, '\u06A9')
-      .replace(/[\u064B-\u065F\u0670\u0640]/g, '')
-      .replace(/[\u200C\u200D]/g, ' ')
-      .toLowerCase()
-      .replace(/\s+/g, ' ')
-      .trim();
-  }
-
-  // خواندن CSV (با پشتیبانی از کاما و خط جدید داخل گیومه)
-  function parseCSV(text){
-    text = String(text || '').replace(/^\uFEFF/, '');
-    var rows = [], row = [], cell = '', inQ = false, i, c;
-    for (i = 0; i < text.length; i++){
-      c = text[i];
-      if (inQ){
-        if (c === '"'){
-          if (text[i + 1] === '"'){ cell += '"'; i++; } else { inQ = false; }
-        } else { cell += c; }
-      } else if (c === '"'){
-        inQ = true;
-      } else if (c === ','){
-        row.push(cell); cell = '';
-      } else if (c === '\n' || c === '\r'){
-        if (c === '\r' && text[i + 1] === '\n') i++;
-        row.push(cell); rows.push(row); row = []; cell = '';
-      } else { cell += c; }
-    }
-    if (cell !== '' || row.length){ row.push(cell); rows.push(row); }
-    return rows;
-  }
-
-  function toObjects(rows){
-    if (!rows.length) return [];
-    var head = rows[0].map(function(h){ return h.trim(); });
-    return rows.slice(1).map(function(r){
-      var o = {};
-      head.forEach(function(h, i){ o[h] = (r[i] || '').trim(); });
-      return o;
-    });
-  }
-
-  // فقط لینک‌های http/https (و t.me بدون پروتکل) پذیرفته می‌شوند
-  function safeUrl(u){
-    u = (u || '').trim();
-    if (!u) return null;
-    if (/^(t\.me|telegram\.me)\//i.test(u)) u = 'https://' + u;
-    try {
-      var x = new URL(u);
-      if (x.protocol !== 'http:' && x.protocol !== 'https:') return null;
-      return x;
-    } catch (e) { return null; }
-  }
-
-  // افزودن UTM فقط اگر در لینک شیت وجود نداشته باشد
-  function withUtm(u, utm){
-    var x = safeUrl(u);
-    if (!x) return '';
-    if (/(^|\.)t\.me$/i.test(x.hostname) || /telegram\.me$/i.test(x.hostname)) return x.toString();
-    Object.keys(utm).forEach(function(k){
-      if (!x.searchParams.has(k)) x.searchParams.set(k, utm[k]);
-    });
-    return x.toString();
-  }
-
-  // تبدیل ردیف‌های شیت به لیست محصول
-  function buildProducts(csvText, utm){
-    var list = [];
-    toObjects(parseCSV(csvText)).forEach(function(o){
-      if (!o.ProductName) return;
-      var bot = safeUrl(o.TelegramBotUrl);
-      var p = {
-        name: o.ProductName,
-        shop: o.ShopName || '',
-        category: o.Category || '',
-        main: withUtm(o.MainUrl, utm),
-        phone: withUtm(o.PhoneBuyUrl, utm),
-        web: withUtm(o.WebBuyUrl, utm),
-        bot: bot ? bot.toString() : '',
-        smsCode: toEnDigits(o.SmsCode).trim(),
-        smsNumber: toEnDigits(o.SmsNumber).replace(/[^\d+]/g, '')
-      };
-      p.hasSms = !!(p.smsCode && p.smsNumber);
-      if (!(p.main || p.phone || p.web || p.bot || p.hasSms)) return; // کارت بدون هیچ لینکی نمایش داده نمی‌شود
-      p.hay = norm(p.name + ' ' + p.shop + ' ' + p.category);
-      p.catKey = norm(p.category);
-      list.push(p);
-    });
-    return list;
-  }
-
-  /* ---------- تنظیمات (فقط این بخش را در صورت نیاز عوض کن) ---------- */
-  var CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQghEBhJPSo7HHEi1-APlxDJ6lA8pTX_x62J55ZFIsEZa-ijru_YTh61_xA5HYSo6U9WoSDA6Koaqsp/pub?gid=0&single=true&output=csv';
-  var PAGE_SIZE = 12;          // تعداد محصول در هر بار نمایش
-  var NEWEST_FIRST = true;     // true: ردیف‌های آخر شیت اول نمایش داده شوند
-  var UTM = { utm_source: 'peykfazayi', utm_medium: 'search' }; // فقط اگر در لینک شیت نباشد اضافه می‌شود
-  var CACHE_KEY = 'pf_products_csv_v1';
-
-  /* ---------- رابط کاربری ---------- */
-  var $q = document.getElementById('ps-q');
-  var $cat = document.getElementById('ps-cat');
-  var $count = document.getElementById('ps-count');
-  var $results = document.getElementById('ps-results');
-  var $more = document.getElementById('ps-more');
-  var products = [];
-  var shown = PAGE_SIZE;
-
-  function track(type, p){
-    try {
-      if (typeof gtag === 'function'){
-        gtag('event', 'product_click', {
-          button_type: type,
-          product_name: p.name,
-          shop_name: p.shop,
-          category: p.category
-        });
+    Papa.parse(realCsvUrl, {
+      download: true,
+      header: true,
+      skipEmptyLines: true,
+      complete: function(results) {
+        if(results.data && results.data.length > 0){
+          allProducts = results.data.map(row => {
+            let cleanRow = {};
+            for(let key in row){
+              cleanRow[key.trim()] = row[key] ? row[key].trim() : '';
+            }
+            return cleanRow;
+          });
+          populateCategories();
+        }
+      },
+      error: function(err) {
+        console.error("Error loading CSV:", err);
       }
-    } catch (e) {}
-  }
-
-  function el(tag, cls, text){
-    var n = document.createElement(tag);
-    if (cls) n.className = cls;
-    if (text != null) n.textContent = text;
-    return n;
-  }
-
-  function linkBtn(label, href, cls, type, p){
-    var a = el('a', 'btn ' + cls, label);
-    a.href = href;
-    if (/^https?:/i.test(href)){ a.target = '_blank'; a.rel = 'noopener'; }
-    a.addEventListener('click', function(){ track(type, p); });
-    return a;
-  }
-
-  function ltr(text){
-    var b = el('bdi', 'ltr', text);
-    return b;
-  }
-
-  function card(p){
-    var art = el('article', 'product');
-    art.appendChild(el('h3', 'product-name', p.name));
-
-    var meta = el('div', 'product-meta');
-    if (p.shop) meta.appendChild(el('span', '', 'فروشگاه ' + p.shop));
-    if (p.category) meta.appendChild(el('span', 'chip', p.category));
-    art.appendChild(meta);
-
-    var actions = el('div', 'actions');
-    if (p.main)  actions.appendChild(linkBtn('صفحه محصول', p.main, 'btn-main', 'product_page', p));
-    if (p.phone) actions.appendChild(linkBtn('خرید تلفنی', p.phone, '', 'phone_order', p));
-    if (p.web)   actions.appendChild(linkBtn('خرید اینترنتی', p.web, '', 'web_order', p));
-    if (p.bot)   actions.appendChild(linkBtn('خرید از ربات تلگرام', p.bot, '', 'telegram_bot', p));
-    if (p.hasSms){
-      actions.appendChild(linkBtn('خرید با پیامک',
-        'sms:' + p.smsNumber + '?body=' + encodeURIComponent(p.smsCode), '', 'sms_order', p));
-    }
-    art.appendChild(actions);
-
-    if (p.hasSms){
-      var line = el('p', 'sms-line');
-      line.appendChild(document.createTextNode('برای خرید با پیامک، کد '));
-      line.appendChild(ltr(p.smsCode));
-      line.appendChild(document.createTextNode(' را به شماره '));
-      line.appendChild(ltr(p.smsNumber));
-      line.appendChild(document.createTextNode(' بفرست.'));
-      art.appendChild(line);
-    }
-    return art;
-  }
-
-  function filtered(){
-    var terms = norm($q.value).split(' ').filter(Boolean);
-    var cat = $cat.value;
-    return products.filter(function(p){
-      if (cat && p.catKey !== cat) return false;
-      return terms.every(function(t){ return p.hay.indexOf(t) !== -1; });
     });
-  }
-
-  function render(){
-    var list = filtered();
-    $results.textContent = '';
-    list.slice(0, shown).forEach(function(p){ $results.appendChild(card(p)); });
-
-    if (!list.length){
-      $count.textContent = '';
-      $results.appendChild(el('p', 'empty',
-        'محصولی با این اسم پیدا نشد. اسم دیگری را امتحان کن یا از لیست فروشگاه‌ها پایین‌تر سر بزن.'));
-    } else {
-      $count.textContent = list.length.toLocaleString('fa-IR') + ' محصول';
-    }
-    $more.hidden = shown >= list.length;
-  }
-
-  function fillCategories(){
-    var seen = {}, items = [];
-    products.forEach(function(p){
-      if (p.catKey && !seen[p.catKey]){ seen[p.catKey] = true; items.push({ key: p.catKey, label: p.category }); }
-    });
-    items.sort(function(a, b){ return a.label.localeCompare(b.label, 'fa'); });
-    items.forEach(function(it){
-      var o = document.createElement('option');
-      o.value = it.key;
-      o.textContent = it.label;
-      $cat.appendChild(o);
-    });
-  }
-
-  function start(csvText){
-    products = buildProducts(csvText, UTM);
-    if (NEWEST_FIRST) products.reverse();
-    if (!products.length){ showError(); return; }
-    fillCategories();
-    var pre = new URLSearchParams(location.search).get('q'); // مثلاً peykfazayi.ir/?q=کاپشن
-    if (pre) $q.value = pre;
-    render();
-  }
-
-  function showError(){
-    $count.textContent = '';
-    $results.textContent = '';
-    $results.appendChild(el('p', 'empty',
-      'فهرست محصولات الان بارگذاری نشد. می‌توانی مستقیم از لیست فروشگاه‌ها پایین‌تر خرید کنی.'));
-    $more.hidden = true;
-  }
-
-  function load(){
-    $count.textContent = 'در حال بارگذاری فهرست محصولات…';
-    fetch(CSV_URL, { cache: 'no-store' })
-      .then(function(r){ if (!r.ok) throw new Error('http ' + r.status); return r.text(); })
-      .then(function(text){
-        try { localStorage.setItem(CACHE_KEY, text); } catch (e) {}
-        start(text);
-      })
-      .catch(function(){
-        var cached = null;
-        try { cached = localStorage.getItem(CACHE_KEY); } catch (e) {}
-        if (cached) start(cached); else showError();
-      });
-  }
-
-  var timer;
-  $q.addEventListener('input', function(){
-    clearTimeout(timer);
-    timer = setTimeout(function(){ shown = PAGE_SIZE; render(); }, 120);
   });
-  $cat.addEventListener('change', function(){ shown = PAGE_SIZE; render(); });
-  $more.addEventListener('click', function(){ shown += PAGE_SIZE; render(); });
 
-  load();
-})();
+  // Populate Category Dropdown
+  function populateCategories() {
+    const categorySelect = document.getElementById('categorySelect');
+    if(!categorySelect) return;
+    
+    const categories = [...new Set(allProducts.map(p => p.Category).filter(Boolean))];
+    categorySelect.innerHTML = '<option value="">یک دسته‌بندی انتخاب کنید...</option>';
+    
+    categories.forEach(cat => {
+      const opt = document.createElement('option');
+      opt.value = cat;
+      opt.textContent = cat;
+      categorySelect.appendChild(opt);
+    });
+  }
+
+  // METHOD 1: Search Button Clicked
+  function executeSearch() {
+    const query = document.getElementById('searchInput').value.trim().toLowerCase();
+    const searchResultGroup = document.getElementById('searchResultGroup');
+    const searchResultSelect = document.getElementById('searchResultSelect');
+    const noResultMsg = document.getElementById('noResultMsg');
+    const resultCard = document.getElementById('resultCard');
+
+    // Reset category dropdowns
+    document.getElementById('categorySelect').value = "";
+    document.getElementById('categoryProductSelect').innerHTML = '<option value="">ابتدا دسته‌بندی را انتخاب کنید...</option>';
+    document.getElementById('categoryProductSelect').disabled = true;
+    resultCard.style.display = 'none';
+
+    if (query === "") {
+      searchResultGroup.style.display = 'none';
+      noResultMsg.style.display = 'none';
+      return;
+    }
+
+    const matches = allProducts.filter(p => p.ProductName && p.ProductName.toLowerCase().includes(query));
+
+    if (matches.length === 0) {
+      searchResultGroup.style.display = 'none';
+      noResultMsg.style.display = 'block';
+      return;
+    }
+
+    noResultMsg.style.display = 'none';
+    searchResultSelect.innerHTML = '<option value="">محصول مورد نظر را انتخاب کنید...</option>';
+
+    matches.forEach(p => {
+      const idx = allProducts.indexOf(p);
+      const opt = document.createElement('option');
+      opt.value = idx;
+      opt.textContent = `${p.ProductName} (${p.ShopName || 'فروشگاه'})`;
+      searchResultSelect.appendChild(opt);
+    });
+
+    searchResultGroup.style.display = 'block';
+  }
+
+  // METHOD 1: User selects item from search result dropdown
+  function onSearchResultSelect() {
+    const idx = document.getElementById('searchResultSelect').value;
+    if (idx !== "") {
+      renderDetails(parseInt(idx));
+    } else {
+      document.getElementById('resultCard').style.display = 'none';
+    }
+  }
+
+  // METHOD 2: Category Dropdown Changed -> Fills Product Dropdown
+  function onCategoryChange() {
+    const selectedCategory = document.getElementById('categorySelect').value;
+    const categoryProductSelect = document.getElementById('categoryProductSelect');
+    
+    // Clear search box & result card
+    document.getElementById('searchInput').value = "";
+    document.getElementById('searchResultGroup').style.display = 'none';
+    document.getElementById('noResultMsg').style.display = 'none';
+    document.getElementById('resultCard').style.display = 'none';
+
+    if (selectedCategory === "") {
+      categoryProductSelect.innerHTML = '<option value="">ابتدا دسته‌بندی را انتخاب کنید...</option>';
+      categoryProductSelect.disabled = true;
+      return;
+    }
+
+    const filteredProducts = allProducts.filter(p => p.Category === selectedCategory);
+
+    categoryProductSelect.innerHTML = '<option value="">یک محصول از این دسته انتخاب کنید...</option>';
+    filteredProducts.forEach(p => {
+      const idx = allProducts.indexOf(p);
+      const opt = document.createElement('option');
+      opt.value = idx;
+      opt.textContent = `${p.ProductName} (${p.ShopName || 'فروشگاه'})`;
+      categoryProductSelect.appendChild(opt);
+    });
+
+    categoryProductSelect.disabled = false;
+  }
+
+  // METHOD 2: User selects product from category product dropdown
+  function onCategoryProductSelect() {
+    const idx = document.getElementById('categoryProductSelect').value;
+    if (idx !== "") {
+      renderDetails(parseInt(idx));
+    } else {
+      document.getElementById('resultCard').style.display = 'none';
+    }
+  }
+
+  // Render Final Product Details Box
+  function renderDetails(productIndex) {
+    const resultCard = document.getElementById('resultCard');
+    const item = allProducts[productIndex];
+
+    if(!item || !resultCard) return;
+
+    let html = `
+      <span class="result-shop">فروشگاه: ${item.ShopName || 'نامشخص'}</span>
+      <div class="result-title">${item.ProductName}</div>
+      <div class="btn-group">
+    `;
+
+    if (item.MainUrl) {
+      html += `<a href="${item.MainUrl}" target="_blank" rel="noopener" class="btn-link btn-main">🔗 مشاهده لینک اصلی محصول</a>`;
+    }
+
+    if (item.PhoneBuyUrl) {
+      html += `<a href="${item.PhoneBuyUrl}" target="_blank" rel="noopener" class="btn-link btn-phone">📞 ثبت سفارش تلفنی سریع</a>`;
+    }
+
+    if (item.WebBuyUrl) {
+      html += `<a href="${item.WebBuyUrl}" target="_blank" rel="noopener" class="btn-link btn-web">🛒 خرید اینترنتی / فرم سفارش</a>`;
+    }
+
+    html += `</div>`;
+
+    if (item.SmsCode && item.SmsNumber) {
+      html += `
+        <div class="sms-details">
+          <strong>✉️ خرید آسان با پیامک:</strong><br>
+          کد <code>${item.SmsCode}</code> را به شماره <code>${item.SmsNumber}</code> پیامک کنید.
+        </div>
+      `;
+    }
+
+    resultCard.innerHTML = html;
+    resultCard.style.display = 'block';
+  }
 </script>
 
 </body>
