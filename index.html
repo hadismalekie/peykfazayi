@@ -44,7 +44,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     --accent-purple:#b765b2;
     --accent-teal:#1ea689;
     --accent-pink:#e26d9c;
-    --accent-galaxy-yellow:#f2c94c; /* زرد کهکشانی ملایم و هماهنگ */
+    --accent-galaxy-yellow:#f2c94c;
     --star:#f4f1ff;
     --text-soft:#d9d4f0;
     --text-dim:#948fbf;
@@ -261,7 +261,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   }
   .btn-link:hover{transform:translateY(-1px); opacity:0.95;}
   .btn-main{background:var(--accent-purple); color:#fff;}
-  .btn-phone{background:var(--accent-galaxy-yellow); color:#08241e;} /* رنگ زرد کهکشانی هماهنگ با متن تیره برای خوانایی عالی */
+  .btn-phone{background:var(--accent-galaxy-yellow); color:#08241e;}
   .btn-web{background:var(--accent-teal); color:#08241e;}
   .sms-details{
     background:rgba(10,8,23,0.5);
@@ -878,17 +878,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     if (item.MainUrl) {
       let mainLink = applyUtmToLink(item.MainUrl);
-      html += `<a href="${mainLink}" target="_blank" rel="noopener" class="btn-link btn-main">🔗 مشاهده لینک اصلی محصول</a>`;
+      html += `<a href="${mainLink}" target="_blank" rel="nofollow noopener" class="btn-link btn-main">🔗 مشاهده لینک اصلی محصول</a>`;
     }
 
     if (item.PhoneBuyUrl) {
       let phoneLink = applyUtmToLink(item.PhoneBuyUrl);
-      html += `<a href="${phoneLink}" target="_blank" rel="noopener" class="btn-link btn-phone">📞 ثبت سفارش تلفنی سریع</a>`;
+      html += `<a href="${phoneLink}" target="_blank" rel="nofollow noopener" class="btn-link btn-phone">📞 ثبت سفارش تلفنی سریع</a>`;
     }
 
     if (item.WebBuyUrl) {
       let webLink = applyUtmToLink(item.WebBuyUrl);
-      html += `<a href="${webLink}" target="_blank" rel="noopener" class="btn-link btn-web">🛒 خرید اینترنتی / فرم سفارش</a>`;
+      html += `<a href="${webLink}" target="_blank" rel="nofollow noopener" class="btn-link btn-web">🛒 خرید اینترنتی / فرم سفارش</a>`;
     }
 
     html += `</div>`;
