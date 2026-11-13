@@ -15,8 +15,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;800&display=swap" rel="stylesheet">
 
-<!-- Load PapaParse library to read Google Sheet CSV -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
 
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-GP9XETLK3F"></script>
@@ -462,6 +460,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     padding:8px 18px;
   }
   .assistant-cta svg{width:15px; height:15px;}
+
+  /* دکمه جستجوی محصول */
+  .search-cta{display:flex;align-items:center;justify-content:center;gap:10px;text-decoration:none;
+    font-weight:700;font-size:1rem;color:#08241e;background:var(--accent-teal);border-radius:16px;
+    padding:15px 18px;transition:transform .2s ease,opacity .2s ease;box-shadow:0 0 24px rgba(30,166,137,.35);}
+  .search-cta:hover,.search-cta:focus-visible{transform:translateY(-2px);opacity:.95;}
+  .search-cta svg{width:20px;height:20px;}
 </style>
 </head>
 <body>
@@ -494,53 +499,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
     <h1>پیک فضایی</h1>
     <p class="tagline">یک سفینه که هر بار کنار سیاره‌ی تازه‌ای پارک می‌کند و یک چیز جدید نشانمان می‌دهد.</p>
-  </section>
-
-  <!-- DUAL OPTION SEARCH & CATEGORY HUB SECTION -->
-  <section>
-    <p class="section-label">🔍 جستجو یا انتخاب دسته‌بندی محصول</p>
-    <div class="search-card">
-      
-      <!-- METHOD 1: Search Box with Button + Result Dropdown -->
-      <div class="form-group">
-        <label for="searchInput">جستجو با کلمه کلیدی:</label>
-        <div class="search-row">
-          <input type="text" id="searchInput" placeholder="نام محصول را بنویسید...">
-          <button class="search-btn" onclick="executeSearch()">جستجو</button>
-        </div>
-      </div>
-
-      <!-- Result Dropdown (Populated after clicking search) -->
-      <div class="form-group" id="searchResultGroup" style="display:none;">
-        <label for="searchResultSelect">نتایج جستجو:</label>
-        <select id="searchResultSelect" onchange="onSearchResultSelect()">
-          <option value="">یک مورد را انتخاب کنید...</option>
-        </select>
-      </div>
-
-      <!-- No Result Message -->
-      <div id="noResultMsg" class="no-result">محصولی با این اسم پیدا نشد. اسم دیگری را امتحان کن یا به لیست فروشگاه‌ها پایین‌تر سر بزن.</div>
-
-      <div class="or-divider">یا انتخاب بر اساس دسته‌بندی</div>
-
-      <!-- METHOD 2: Category Dropdown -> Product Dropdown -->
-      <div class="form-group">
-        <label for="categorySelect">۱. انتخاب دسته‌بندی:</label>
-        <select id="categorySelect" onchange="onCategoryChange()">
-          <option value="">ابتدا یک دسته‌بندی انتخاب کنید...</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label for="categoryProductSelect">۲. انتخاب محصول:</label>
-        <select id="categoryProductSelect" disabled onchange="onCategoryProductSelect()">
-          <option value="">ابتدا دسته‌بندی را انتخاب کنید...</option>
-        </select>
-      </div>
-
-      <!-- FINAL INFO DISPLAY CARD -->
-      <div id="resultCard" class="result-card"></div>
-    </div>
   </section>
 
 <p class="section-label">
@@ -662,6 +620,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
   </section>
 
+  <section>
+    <a class="search-cta" href="search.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      دنبال یک محصول خاص می‌گردی؟ جستجو کن
+    </a>
+  </section>
+
   <footer>
     <a href="mailto:peykfazayi.ir@gmail.com">ایمیل </a>
 	<span>
@@ -709,202 +674,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   document.querySelectorAll('a[data-utm]').forEach(a=>{
     a.href = addUtm(a.href);
   });
-</script>
-
-<!-- PRODUCT SEARCH ENGINE SCRIPT -->
-<script>
-  let allProducts = [];
-  var UTM = { utm_source: 'peykfazayi', utm_medium: 'search' };
-
-  window.addEventListener('DOMContentLoaded', () => {
-    const realCsvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQghEBhJPSo7HHEi1-APlxDJ6lA8pTX_x62J55ZFIsEZa-ijru_YTh61_xA5HYSo6U9WoSDA6Koaqsp/pub?gid=0&single=true&output=csv';
-
-    Papa.parse(realCsvUrl, {
-      download: true,
-      header: true,
-      skipEmptyLines: true,
-      complete: function(results) {
-        if(results.data && results.data.length > 0){
-          allProducts = results.data.map(row => {
-            let cleanRow = {};
-            for(let key in row){
-              cleanRow[key.trim()] = row[key] ? row[key].trim() : '';
-            }
-            return cleanRow;
-          });
-          populateCategories();
-        }
-      },
-      error: function(err) {
-        console.error("Error loading CSV:", err);
-      }
-    });
-  });
-
-  // Helper to append UTM parameters to fetched links
-  function applyUtmToLink(urlStr) {
-    if (!urlStr) return '';
-    try {
-      let u = new URL(urlStr);
-      u.searchParams.set('utm_source', UTM.utm_source);
-      u.searchParams.set('utm_medium', UTM.utm_medium);
-      return u.toString();
-    } catch(e) {
-      return urlStr;
-    }
-  }
-
-  // Populate Category Dropdown
-  function populateCategories() {
-    const categorySelect = document.getElementById('categorySelect');
-    if(!categorySelect) return;
-    
-    const categories = [...new Set(allProducts.map(p => p.Category).filter(Boolean))];
-    categorySelect.innerHTML = '<option value="">یک دسته‌بندی انتخاب کنید...</option>';
-    
-    categories.forEach(cat => {
-      const opt = document.createElement('option');
-      opt.value = cat;
-      opt.textContent = cat;
-      categorySelect.appendChild(opt);
-    });
-  }
-
-  // METHOD 1: Search Button Clicked
-  function executeSearch() {
-    const query = document.getElementById('searchInput').value.trim().toLowerCase();
-    const searchResultGroup = document.getElementById('searchResultGroup');
-    const searchResultSelect = document.getElementById('searchResultSelect');
-    const noResultMsg = document.getElementById('noResultMsg');
-    const resultCard = document.getElementById('resultCard');
-
-    // Reset category dropdowns
-    document.getElementById('categorySelect').value = "";
-    document.getElementById('categoryProductSelect').innerHTML = '<option value="">ابتدا دسته‌بندی را انتخاب کنید...</option>';
-    document.getElementById('categoryProductSelect').disabled = true;
-    resultCard.style.display = 'none';
-
-    if (query === "") {
-      searchResultGroup.style.display = 'none';
-      noResultMsg.style.display = 'none';
-      return;
-    }
-
-    const matches = allProducts.filter(p => p.ProductName && p.ProductName.toLowerCase().includes(query));
-
-    if (matches.length === 0) {
-      searchResultGroup.style.display = 'none';
-      noResultMsg.style.display = 'block';
-      return;
-    }
-
-    noResultMsg.style.display = 'none';
-    searchResultSelect.innerHTML = '<option value="">محصول مورد نظر را انتخاب کنید...</option>';
-
-    matches.forEach(p => {
-      const idx = allProducts.indexOf(p);
-      const opt = document.createElement('option');
-      opt.value = idx;
-      opt.textContent = `${p.ProductName} (${p.ShopName || 'فروشگاه'})`;
-      searchResultSelect.appendChild(opt);
-    });
-
-    searchResultGroup.style.display = 'block';
-  }
-
-  // METHOD 1: User selects item from search result dropdown
-  function onSearchResultSelect() {
-    const idx = document.getElementById('searchResultSelect').value;
-    if (idx !== "") {
-      renderDetails(parseInt(idx));
-    } else {
-      document.getElementById('resultCard').style.display = 'none';
-    }
-  }
-
-  // METHOD 2: Category Dropdown Changed -> Fills Product Dropdown
-  function onCategoryChange() {
-    const selectedCategory = document.getElementById('categorySelect').value;
-    const categoryProductSelect = document.getElementById('categoryProductSelect');
-    
-    // Clear search box & result card
-    document.getElementById('searchInput').value = "";
-    document.getElementById('searchResultGroup').style.display = 'none';
-    document.getElementById('noResultMsg').style.display = 'none';
-    document.getElementById('resultCard').style.display = 'none';
-
-    if (selectedCategory === "") {
-      categoryProductSelect.innerHTML = '<option value="">ابتدا دسته‌بندی را انتخاب کنید...</option>';
-      categoryProductSelect.disabled = true;
-      return;
-    }
-
-    const filteredProducts = allProducts.filter(p => p.Category === selectedCategory);
-
-    categoryProductSelect.innerHTML = '<option value="">یک محصول از این دسته انتخاب کنید...</option>';
-    filteredProducts.forEach(p => {
-      const idx = allProducts.indexOf(p);
-      const opt = document.createElement('option');
-      opt.value = idx;
-      opt.textContent = `${p.ProductName} (${p.ShopName || 'فروشگاه'})`;
-      categoryProductSelect.appendChild(opt);
-    });
-
-    categoryProductSelect.disabled = false;
-  }
-
-  // METHOD 2: User selects product from category product dropdown
-  function onCategoryProductSelect() {
-    const idx = document.getElementById('categoryProductSelect').value;
-    if (idx !== "") {
-      renderDetails(parseInt(idx));
-    } else {
-      document.getElementById('resultCard').style.display = 'none';
-    }
-  }
-
-  // Render Final Product Details Box
-  function renderDetails(productIndex) {
-    const resultCard = document.getElementById('resultCard');
-    const item = allProducts[productIndex];
-
-    if(!item || !resultCard) return;
-
-    let html = `
-      <span class="result-shop">فروشگاه: ${item.ShopName || 'نامشخص'}</span>
-      <div class="result-title">${item.ProductName}</div>
-      <div class="btn-group">
-    `;
-
-    if (item.MainUrl) {
-      let mainLink = applyUtmToLink(item.MainUrl);
-      html += `<a href="${mainLink}" target="_blank" rel="nofollow noopener" class="btn-link btn-main">🔗 مشاهده لینک اصلی محصول</a>`;
-    }
-
-    if (item.PhoneBuyUrl) {
-      let phoneLink = applyUtmToLink(item.PhoneBuyUrl);
-      html += `<a href="${phoneLink}" target="_blank" rel="nofollow noopener" class="btn-link btn-phone">📞 ثبت سفارش تلفنی سریع</a>`;
-    }
-
-    if (item.WebBuyUrl) {
-      let webLink = applyUtmToLink(item.WebBuyUrl);
-      html += `<a href="${webLink}" target="_blank" rel="nofollow noopener" class="btn-link btn-web">🛒 خرید اینترنتی / فرم سفارش</a>`;
-    }
-
-    html += `</div>`;
-
-    if (item.SmsCode && item.SmsNumber) {
-      html += `
-        <div class="sms-details">
-          <strong>✉️ خرید آسان با پیامک:</strong><br>
-          کد <code>${item.SmsCode}</code> را به شماره <code>${item.SmsNumber}</code> پیامک کنید.
-        </div>
-      `;
-    }
-
-    resultCard.innerHTML = html;
-    resultCard.style.display = 'block';
-  }
 </script>
 
 </body>
