@@ -94,7 +94,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     z-index:1;
     max-width:460px;
     margin:0 auto;
-    padding:64px 24px 48px;
+    padding:64px 24px 110px;
   }
 
   .hero{
@@ -371,7 +371,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   footer a:hover{color:var(--accent-teal);}
 
   @media (max-width:380px){
-    main{padding:48px 18px 40px;}
+    main{padding:48px 18px 100px;}
     .shop-url{display:none;}
   }
   .footer-logo {
@@ -473,16 +473,21 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   /* دکمه پخش موسیقی */
   .music-btn{
     display:inline-flex; align-items:center; gap:10px;
-    margin-top:18px; padding:10px 20px;
+    position:fixed; z-index:50;
+    left:0; right:0; margin:0 auto; width:fit-content;
+    bottom:calc(18px + env(safe-area-inset-bottom, 0px));
+    padding:11px 22px;
+    background:rgba(18,14,40,0.82);
+    -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px);
+    box-shadow:0 6px 24px rgba(0,0,0,0.45), 0 0 22px rgba(183,101,178,0.25);
     font-family:'Vazirmatn', sans-serif; font-size:0.9rem; font-weight:600;
     color:var(--text-soft); cursor:pointer;
-    background:rgba(255,255,255,0.035);
     border:1px solid var(--ring); border-radius:999px;
     transition:border-color 0.25s ease, background 0.25s ease, transform 0.2s ease;
   }
   .music-btn:hover, .music-btn:focus-visible{
     border-color:rgba(183,101,178,0.6);
-    background:rgba(183,101,178,0.08);
+    background:rgba(40,22,66,0.9);
     transform:translateY(-2px);
   }
   .music-btn:focus-visible{outline:2px solid var(--accent-teal); outline-offset:3px;}
