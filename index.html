@@ -467,6 +467,29 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     padding:15px 18px;transition:transform .2s ease,opacity .2s ease;box-shadow:0 0 24px rgba(30,166,137,.35);}
   .search-cta:hover,.search-cta:focus-visible{transform:translateY(-2px);opacity:.95;}
   .search-cta svg{width:20px;height:20px;}
+
+  .shop-desc{font-size:0.78rem; color:var(--text-dim); line-height:1.7;}
+
+  /* دکمه پخش موسیقی */
+  .music-btn{
+    display:inline-flex; align-items:center; gap:10px;
+    margin-top:18px; padding:10px 20px;
+    font-family:'Vazirmatn', sans-serif; font-size:0.9rem; font-weight:600;
+    color:var(--text-soft); cursor:pointer;
+    background:rgba(255,255,255,0.035);
+    border:1px solid var(--ring); border-radius:999px;
+    transition:border-color 0.25s ease, background 0.25s ease, transform 0.2s ease;
+  }
+  .music-btn:hover, .music-btn:focus-visible{
+    border-color:rgba(183,101,178,0.6);
+    background:rgba(183,101,178,0.08);
+    transform:translateY(-2px);
+  }
+  .music-btn:focus-visible{outline:2px solid var(--accent-teal); outline-offset:3px;}
+  .music-btn svg{width:18px; height:18px; color:var(--accent-teal);}
+  .music-btn .ic-pause{display:none;}
+  .music-btn.playing .ic-play{display:none;}
+  .music-btn.playing .ic-pause{display:block;}
 </style>
 </head>
 <body>
@@ -499,6 +522,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
     <h1>پیک فضایی</h1>
     <p class="tagline">یک سفینه که هر بار کنار سیاره‌ی تازه‌ای پارک می‌کند و یک چیز جدید نشانمان می‌دهد.</p>
+    <audio id="peykMusic" src="https://bargesheni.ir/wp-content/uploads/peykFazayi-.mp3" preload="auto" loop></audio>
+    <button type="button" class="music-btn" id="musicBtn" aria-label="پخش موسیقی پیک فضایی">
+      <svg class="ic-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5-11-6.5Z"/></svg>
+      <svg class="ic-pause" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+      <span id="musicLabel">موسیقی پیک فضایی</span>
+    </button>
   </section>
 
 <p class="section-label">
@@ -512,6 +541,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <span class="shop-text">
         <span class="shop-name">بیپ بیپ خودرو</span>
         <span class="shop-url">BipBeep.ir</span>
+        <span class="shop-desc">(گجت کاربردی خونه و اتومبیل)</span>
       </span>
     </a>
 
@@ -522,6 +552,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <span class="shop-text">
         <span class="shop-name">میومیو ورزش</span>
         <span class="shop-url">meu-meu.ir</span>
+        <span class="shop-desc">(لباس و کفش و ابزار سفر دوستان)</span>
       </span>
     </a>
 
@@ -532,6 +563,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <span class="shop-text">
         <span class="shop-name">میومیو گالری</span>
         <span class="shop-url">miu-miu.ir</span>
+        <span class="shop-desc">(استایل های ست زیبا)</span>
       </span>
     </a>
 
@@ -542,6 +574,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <span class="shop-text">
         <span class="shop-name">نیوتن سیب</span>
         <span class="shop-url">NewtonSib.ir</span>
+        <span class="shop-desc">(ابزارهای کاربردی برای زندگی راحت تر)</span>
       </span>
     </a>
 
@@ -552,6 +585,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <span class="shop-text">
         <span class="shop-name">ماکادمیانو</span>
         <span class="shop-url">Macademiano.ir</span>
+        <span class="shop-desc">(لباس و کفش مردانه و پسرانه و کفش اسپرت زنانه)</span>
       </span>
     </a>
 
@@ -562,6 +596,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <span class="shop-text">
         <span class="shop-name">یویو چمدون</span>
         <span class="shop-url">YoYoChamedoon.ir</span>
+        <span class="shop-desc">(یه چمدون کامل از لباس و ابزار کاربردی)</span>
       </span>
     </a>
 	
@@ -674,6 +709,21 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   document.querySelectorAll('a[data-utm]').forEach(a=>{
     a.href = addUtm(a.href);
   });
+</script>
+
+<script>
+  // پخش موسیقی فقط با کلیک کاربر؛ فایل از ابتدا بارگذاری می‌شود
+  (function(){
+    const a=document.getElementById('peykMusic');
+    const b=document.getElementById('musicBtn');
+    const l=document.getElementById('musicLabel');
+    a.load();
+    b.addEventListener('click',function(){
+      if(a.paused){ a.play().catch(function(){}); } else { a.pause(); }
+    });
+    a.addEventListener('play',function(){ b.classList.add('playing'); l.textContent='توقف موسیقی'; });
+    a.addEventListener('pause',function(){ b.classList.remove('playing'); l.textContent='موسیقی پیک فضایی'; });
+  })();
 </script>
 
 </body>
