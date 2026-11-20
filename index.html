@@ -495,6 +495,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .music-btn .ic-pause{display:none;}
   .music-btn.playing .ic-play{display:none;}
   .music-btn.playing .ic-pause{display:block;}
+
+  /* دکمه دانلود کارت */
+  .card-dl{display:flex;align-items:center;justify-content:center;gap:10px;text-decoration:none;
+    font-weight:700;font-size:1rem;color:var(--star);background:rgba(183,101,178,0.18);
+    border:1.5px solid rgba(183,101,178,0.6);border-radius:16px;padding:15px 18px;
+    transition:transform .2s ease,background .25s ease;}
+  .card-dl:hover,.card-dl:focus-visible{transform:translateY(-2px);background:rgba(183,101,178,0.3);}
+  .card-dl svg{width:20px;height:20px;}
 </style>
 </head>
 <body>
@@ -658,6 +666,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span>ایتا</span>
       </a>
     </div>
+  </section>
+
+  <section>
+    <a class="card-dl" href="/images/business-card-ver.png" download="peykfazayi-business-card.png">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 11l5 5 5-5M5 20h14"/></svg>
+      دانلود کارت
+    </a>
   </section>
 
   <section>
