@@ -320,7 +320,7 @@ guarantee: {
   ],
 
    /* ─────  سری سوم عکس (بعد از خیال راحت) ───── */
-  gallery3: ['https://ik.imagekit.io/bisculens/l-PFBelt-C%20(1).jpg','https://ik.imagekit.io/bisculens/l-PFBelt-C%20(2).jpg','https://ik.imagekit.io/bisculens/l-PFBelt-C%20(3).jpg','https://ik.imagekit.io/bisculens/l-PFBelt-C%20(3).jpg'],   
+  gallery3: ['https://ik.imagekit.io/bisculens/l-PFBelt-C%20(1).jpg','https://ik.imagekit.io/bisculens/l-PFBelt-C%20(2).jpg','https://ik.imagekit.io/bisculens/l-PFBelt-C%20(3).jpg','https://ik.imagekit.io/bisculens/l-PFBelt-C%20(4).jpg'],   
   
   
   /* ───── ۱۱. مراحل خرید ───── */
@@ -462,7 +462,7 @@ function render(){
   if (C.reviews.length) h += `<section><h2>نظر مشتری‌ها</h2><div class="scroller">${C.reviews.map(r =>
       `<div class="review card">${r.image ? `<img src="${r.image}" alt="" loading="lazy">` : ''}<div class="body"><div class="stars">${stars(r.stars||5)}</div>${r.text}<div class="who">${r.name}</div></div></div>`).join('')}</div></section>`;
   if (C.guarantee && C.guarantee.title) h += `<section><h2>${C.guaranteeTitle || 'خیال راحت'}</h2><div class="guarantee"><span class="ic">🛡️</span><div><h3>${C.guarantee.title}</h3><p>${C.guarantee.text}</p></div></div></section>`;
-  h += galSec(C.gallery3, C.gallery3Title, 'عکس‌های بیشتر');
+  h += galSec(C.gallery3, C.gallery3Title, 'عکس های مدل سوم');
   if (C.sizeGuide) h += `<section><h2>راهنمای سایز</h2><div class="size">${C.sizeGuide}</div></section>`;
   if (C.chatFaq && C.chatFaq.length) h += `<section><h2>${C.chatTitle}</h2><div class="chat">${C.chatFaq.map(c =>
       `<div class="msg q"><span class="av">🙋</span><div class="bub">${c.q}</div></div><div class="msg a"><span class="av"><img src="${C.logo}" alt=""></span><div class="bub">${c.a}</div></div>`).join('')}</div></section>`;
