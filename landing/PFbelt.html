@@ -31,8 +31,9 @@
       radial-gradient(ellipse 90% 60% at 18% -10%, rgba(183,101,178,.35), transparent 60%),
       radial-gradient(ellipse 80% 50% at 100% 10%, rgba(30,166,137,.28), transparent 55%),
       radial-gradient(ellipse 70% 60% at 50% 120%, rgba(226,109,156,.18), transparent 60%), var(--void);
-    background-attachment:fixed; overflow-x:hidden;
+    background-attachment:fixed; overflow-x:hidden; overflow-x:clip;
   }
+  html{overflow-x:hidden; overflow-x:clip; max-width:100%;}
   main{max-width:480px; margin:0 auto; padding:18px 20px 110px;}
   section{margin:0 0 44px;}
   h1,h2,h3,p{margin:0;}
@@ -48,12 +49,13 @@
   .topbar a.more{color:var(--dim); text-decoration:none;}
 
   /* hero */
-  .hero{text-align:center;}
+  .hero{text-align:center; overflow-x:clip;}
   .porthole{position:relative; width:min(78vw,300px); aspect-ratio:1; margin:0 auto 26px;}
-  .porthole::before{content:""; position:absolute; inset:-14px; border-radius:50%;
+  .porthole::before{content:""; position:absolute; inset:-10px; border-radius:50%;
     border:1.5px dashed rgba(30,166,137,.5); animation:spin 40s linear infinite;}
-  .porthole::after{content:""; position:absolute; inset:-14px; border-radius:50%;
-    background:radial-gradient(circle at 50% 0, var(--pink) 0 5px, transparent 6px); animation:spin 14s linear infinite;}
+  .porthole::after{content:""; position:absolute; inset:-10px; border-radius:50%;
+    background:radial-gradient(circle at 50% 0, var(--pink) 0 3.5px, rgba(226,109,156,.35) 4px, transparent 10px); animation:spin 14s linear infinite, glow 3s ease-in-out infinite;}
+  @keyframes glow{0%,100%{opacity:.55;}50%{opacity:1;}}
   @keyframes spin{to{transform:rotate(360deg);}}
   .porthole .img{width:100%; height:100%; border-radius:50%; overflow:hidden; border:3px solid var(--ring);
     background:rgba(255,255,255,.05); display:flex; align-items:center; justify-content:center; font-size:5rem;}
@@ -229,7 +231,7 @@ const CONFIG = {
   /* ───── ۲. بالای صفحه ───── */
   headline: 'شلوارت فیت میشه اما شکمت اذیت نمیشه',
   lead: ' مینی کمربند،  استفاده راحت تر استایل شیک تر بدن سالم تر',
-  price:386000,
+  price:398000,
   oldPrice:'',                   // خالی = بدون تخفیف
   heroImages: [],                     // عکس‌های مربعی، مثال: ['https://.../1.jpg', 'images/2.jpg']
   rating: { score: '', count: '' },   // فقط اگر واقعی است، مثال: { score: 4.8, count: 320 }
@@ -357,8 +359,8 @@ guarantee: {
   offers: [], 
   
   offers: [
-  { label: 'مدل بدون فلز', note: 'سبک و بدون سگک', price: 386000, fastUrl: 'http://www.bipbeep.ir/addcart.php?action=add&id=1940', smsCode: '107326194000', smsNumber: '10000309', tag: 'پرفروش‌ترین' },
-  { label: 'مدل قلاب فلزی', note: 'محکم و تولید داخل', price: 998000, fastUrl: 'https://meu-meu.ir/product/brief/63572/141407', smsCode: '668503', smsNumber: '3000741988' },
+  { label: 'مدل بدون فلز', note: 'سبک و بدون سگک', price: 398000, fastUrl: 'http://www.bipbeep.ir/addcart.php?action=add&id=1940', smsCode: '107326194000', smsNumber: '10000309', tag: 'پرفروش‌ترین' },
+  { label: 'مدل قلاب فلزی', note: 'محکم و تولید داخل', price: 898000, oldPrice: 1089000, fastUrl: 'https://meu-meu.ir/product/brief/63572/141407', smsCode: '668503', smsNumber: '3000741988' },
   { label: 'مدل لوکس', note: 'ظاهر چرمی', price: 1089000, oldPrice: 1500000, fastUrl: 'http://miu-miu.ir/lightcart/4015?sid=80207', smsCode: '605095', smsNumber: '10002342' }
 ],
 
