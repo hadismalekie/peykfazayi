@@ -451,7 +451,7 @@ function render(){
   if (C.trust.length) h += `<section class="trust">${C.trust.map(t => `<div><b>${t.icon}</b>${t.text}</div>`).join('')}</section>`;
   if (C.painPoints && C.painPoints.length) h += `<section><h2>${C.painTitle || 'این حس رو می‌شناسی؟'}</h2><div class="pains">${C.painPoints.map(p => `<div class="pain"><b>${p.title}</b>${p.text}</div>`).join('')}</div></section>`;
   else if (C.problem) h += `<section class="problem"><p>${C.problem}</p></section>`;
-  h += galSec(C.gallery, C.galleryTitle, 'عکس‌های مدل اول');
+  h += galSec(C.gallery, C.galleryTitle, 'مدل تمام پارچه ای');
   if (C.benefits.length) h += `<section><h2>چرا این محصول؟</h2><div class="benefits">${C.benefits.map(b =>
       `<div class="benefit"><span class="ic">${b.icon}</span><div><h3>${b.title}</h3><p>${b.text}</p></div></div>`).join('')}</div></section>`;
   if (vids.length) h += `<section><h2>${C.videoTitle}</h2><div class="scroller">${vids.map(v => {
@@ -460,11 +460,11 @@ function render(){
       return /\.(mp4|webm)(\?|#|$)/i.test(v.src)
         ? `<div class="vcard" style="${st}"><video src="${v.src}#t=0.1" ${v.poster ? `poster="${v.poster}"` : ''} playsinline loop preload="metadata"></video><div class="play"><span>▶</span></div></div>`
         : `<div class="vcard" style="${st}"><iframe src="${v.src}" allowfullscreen allow="fullscreen" loading="lazy"></iframe></div>`; }).join('')}</div></section>`;
-  h += galSec(C.gallery2, C.gallery2Title, 'عکس‌های مدل دوم');
+  h += galSec(C.gallery2, C.gallery2Title, 'مدل سگک فلزی');
   if (C.reviews.length) h += `<section><h2>نظر مشتری‌ها</h2><div class="scroller">${C.reviews.map(r =>
       `<div class="review card">${r.image ? `<img src="${r.image}" alt="" loading="lazy">` : ''}<div class="body"><div class="stars">${stars(r.stars||5)}</div>${r.text}<div class="who">${r.name}</div></div></div>`).join('')}</div></section>`;
   if (C.guarantee && C.guarantee.title) h += `<section><h2>${C.guaranteeTitle || 'خیال راحت'}</h2><div class="guarantee"><span class="ic">🛡️</span><div><h3>${C.guarantee.title}</h3><p>${C.guarantee.text}</p></div></div></section>`;
-  h += galSec(C.gallery3, C.gallery3Title, 'عکس های مدل سوم');
+  h += galSec(C.gallery3, C.gallery3Title, 'مدل لوکس طرح چرم');
   if (C.sizeGuide) h += `<section><h2>راهنمای سایز</h2><div class="size">${C.sizeGuide}</div></section>`;
   if (C.chatFaq && C.chatFaq.length) h += `<section><h2>${C.chatTitle}</h2><div class="chat">${C.chatFaq.map(c =>
       `<div class="msg q"><span class="av">🙋</span><div class="bub">${c.q}</div></div><div class="msg a"><span class="av"><img src="${C.logo}" alt=""></span><div class="bub">${c.a}</div></div>`).join('')}</div></section>`;
